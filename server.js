@@ -1,3 +1,6 @@
+// SSL 인증서 검증 비활성화 (개발 환경에서만 사용)
+// process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
+
 var webpush = require("web-push");
 const express = require("express");
 const https = require("https");
@@ -50,12 +53,12 @@ app.post("/push/subscribe", (req, res) => {
 
 // 3. 등록된 브라우저 들에게 푸시를 보내는 POST
 app.post("/push/notify", (req, res) => {
-  console.log(`-------------------------------------------`);
+  console.log(`----------------- SERVER --------------------------`);
   console.log(`notify requested : ${JSON.stringify(req.body)}`);
+
   let payload = {};
   payload.title = req.body.title;
   payload.message = req.body.message;
-  payload.image_url = req.body.image_url;
 
   for (const subs of temp_subs) {
     webpush

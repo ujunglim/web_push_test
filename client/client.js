@@ -1,3 +1,4 @@
+// 구독버튼 누르면 => 서비스워커 등록하고 => 구독요청 보냄 & 메세지수신 이벤트 추가
 function registerPush(appPubkey) {
   navigator.serviceWorker
     .register("service-worker.js")
@@ -18,7 +19,7 @@ function registerPush(appPubkey) {
         })
         .then(function (subscription) {
           console.log("post subscription : ", subscription);
-          mysubscription = subscription;
+
           return fetch("https://127.0.0.1:4999/push/subscribe", {
             method: "post",
             headers: { "Content-type": "application/json" },
