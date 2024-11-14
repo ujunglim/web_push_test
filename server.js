@@ -74,6 +74,36 @@ app.post("/push/notify", (req, res) => {
   }
 });
 
-https.createServer(options, app).listen(port, () => {
-  console.log(`webpush server running, port:${port}`);
+// https.createServer(options, app).listen(port, () => {
+//   console.log(`webpush server running, port:${port}`);
+// });
+
+// =============== SSE ===============
+
+const corsOptions = {
+  origin: "http://localhost:8080",
+};
+
+// SSE 엔드포인트
+app.get("/sse", cors(corsOptions), (req, res) => {
+  // 헤더 설정
+  res.setHeader("Content-Type", "text/event-stream");
+  res.setHeader("Cache-Control", "no-cache");
+  res.setHeader("Connection", "keep-alive");
+  // 클라이언트 연결이 유지되는 동안 데이터 푸시
+  const interval = setInterval(() => {
+    const data = JSON.stringify({
+      message: "Hello from server!",
+      timestamp: new Date(),
+    });
+    res.write(`data: ${data}\n\n`);
+  }, 1000);
+
+  // 연결이 종료되었을 때
+  req.on("close", () => {
+    clearInterval(interval);
+    console.log("Client disconnected");
+  });
 });
+
+app.listen(port, () => console.log(`Server is listening on port ${port}`));
