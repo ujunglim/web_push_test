@@ -82,7 +82,7 @@ app.post("/push/notify", (req, res) => {
 
 const corsOptions = {
   // origin: "http://localhost:8080",
-  origin: "http://machost:8080",
+  origin: "http://machost:8080", // cors
 };
 
 // SSE 엔드포인트
