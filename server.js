@@ -3,7 +3,7 @@
 
 var webpush = require("web-push");
 const express = require("express");
-const https = require("https");
+// const https = require("https");
 const fs = require("fs");
 
 var cors = require("cors");
@@ -16,12 +16,12 @@ app.use(cors()); //cross origin 허용
 app.use(express.json()); //json사용
 app.use(express.urlencoded({ extended: true })); //body-parse사용
 
-app.use("/client", express.static("client")); //구독 페이지
-app.use("/sketcher", express.static("sketcher")); //Push 전송 페이지
+// app.use("/client", express.static("client")); //구독 페이지
+// app.use("/sketcher", express.static("sketcher")); //Push 전송 페이지
 
-app.get("/", (req, res) => {
-  res.send("Web Push Server");
-});
+// app.get("/", (req, res) => {
+//   res.send("Web Push Server");
+// });
 
 const options = {
   cert: fs.readFileSync("/Users/hani/localhost+2.pem"),
@@ -81,8 +81,8 @@ app.post("/push/notify", (req, res) => {
 // =============== SSE ===============
 
 const corsOptions = {
-  // origin: "http://localhost:8080",
-  origin: "http://machost:8080", // cors
+  origin: "http://localhost:8080",
+  // origin: "http://machost:8080", // cors
 };
 
 // SSE 엔드포인트
@@ -94,7 +94,8 @@ app.get("/sse", cors(corsOptions), (req, res) => {
   // 클라이언트 연결이 유지되는 동안 데이터 푸시
   const interval = setInterval(() => {
     const data = JSON.stringify({
-      message: "Hello from server!",
+      title: "Noti",
+      body: "Hello from server!",
       timestamp: new Date(),
     });
     res.write(`data: ${data}\n\n`);
